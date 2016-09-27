@@ -1,0 +1,156 @@
+<h1>Exam {{ vm.name }}</h1><hr/>
+<!-- <div class="container"> -->
+    <form class="form-horizontal col-md-12" name="crudeform" novalidate>
+    <fieldset>
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="radios">College Name :</label>
+            <div class="col-md-6">
+                <input type="text" name="firstName" class="form-control  input-md" ng-model="vm.examcrudeappObject.firstName" placeholder="Name" required>
+
+            </div>
+             <div class="form-group" ng-messages="crudeform.firstName.$error" ng-show="crudeform.firstName.$touched && crudeform.firstName.$invalid">
+                <p ng-message="required">
+                    This field is required
+                </p>
+            </div>
+            
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="radios">Affiliation Date :</label>
+            <div class="col-md-6 ">
+                <input type="Date" ng-model="vm.examcrudeappObject.AffiliationDate" />
+            </div>
+        </div>
+
+        <div class="form-group">
+        <label class="col-md-2 control-label" for="radios">Country :</label>
+        <div class="col-md-6">
+            <select  class="form-control" ng-model="vm.examcrudeappObject.country" ng-options="item as item.Country_Description for item in vm.countryList track by item.pk_Country_ID">
+                <option value="">-----selected-----</option>
+            </select>
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label class="col-md-2 control-label" for="radios">State :</label>
+        <div class="col-md-6">
+            <select class="form-control" ng-model="vm.examcrudeappObject.state" ng-disabled="!vm.examcrudeappObject.country"
+                ng-options="item as item.State_Name for item in vm.stateList|filter:{Country_ID:vm.examcrudeappObject.country.pk_Country_ID}:true track by item.State_ID">
+                <option value="">------Select------</option>
+            </select>
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label class="col-md-2 control-label" for="radios">District :</label>
+        <div class="col-md-6">
+            <select class="form-control" ng-model="vm.examcrudeappObject.district" ng-disabled="!vm.examcrudeappObject.state"
+                ng-options="item as item.District_Name for item in vm.districtList|filter:{State_ID:vm.examcrudeappObject.state.State_ID}:true |orderBy:'District_Name' track by item.District_ID">
+                <option value="">------Select------</option>
+            </select>
+        </div>
+    </div>
+
+                        
+
+     
+
+         <div class="form-group">
+            <label class="col-md-2 control-label" for="radios">Type :</label>            
+            <div class="col-md-6" style="padding-top: 8px;">
+                <input type="radio" name="radios" ng-model="vm.examcrudeappObject.InstType" id="radios-0" value="College" checked="checked"> College
+                <input type="radio" name="radios" ng-model="vm.examcrudeappObject.InstType" id="radios-1" value="Institute"> Institute
+                <input type="radio" name="radios" ng-model="vm.examcrudeappObject.InstType" id="radios-2" value="University Department"> University Department
+                <input type="radio" name="radios" ng-model="vm.examcrudeappObject.InstType" id="radios-3" value="Study Center"> Study Center
+            </div>
+        </div>
+
+         <div class="form-group">
+            <label class="col-md-2 control-label" for="radios">Minority Status :</label>
+            <div class="col-md-6" style="padding-top: 8px;">
+                <input type="radio" ng-model="vm.examcrudeappObject.MinorityStatus" value="Minority"> Minority
+                <input type="radio" ng-model="vm.examcrudeappObject.MinorityStatus" value="Non-Minority"> Non-Minority
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="textinput">Parent Body:</label>
+            <div class="col-md-6" style="padding-top: 8px;">
+                <input type="radio" ng-model="vm.examcrudeappObject.ParentBody" ng-value="University"> University
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="radios">College for :</label>
+            <div class="col-md-6 radio-inline" style="padding-left:15px;">
+                <label ng-repeat="c in vm.CollegeFor" class="radio-inline">
+                    <input type="radio" ng-model="vm.examcrudeappObject.CollegeFor" ng-value="c.value"> {{c.value}}
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="textinput"></label>
+            <div class="col-md-6">
+                <input type="checkbox" ng-model="vm.examcrudeappObject.IsResearchCenter"> Recognised as Reserch Center
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label" for="textinput">Documents Submitted :</label>
+            <div class="col-md-6" style="padding-top:8px;" >
+                <label ng-repeat="Document in vm.Documents" style="display:inline;padding-top:5px;">
+            <input type="checkbox" checklist-model="vm.examcrudeappObject.Documents" checklist-value="Document.name"> {{Document.name}}
+            </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+        <button type="button" class="btn btn-primary" ng-disabled = "!crudeform.$valid" ng-click="vm.save()" ng-show=vm.showme>Save Details</button>
+        <button ng-click="vm.update()" ng-hide=vm.showme class="btn btn-warning" >Update Details</button>
+        <button ng-click="vm.reset()" class="btn btn-info" >Reset</button>
+        </div>
+        </div>
+        </fieldset>
+        
+    
+    <br>
+    <hr/>
+   <strong> List of Colleges </strong>
+    <hr/>
+    <div>
+        <table class="table table-bordered" border="2">
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>First Name</th>
+                    <th>Inst Type</th>
+                    <th>Minority Status</th>
+                    <th>Affiliation date</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr ng-repeat="examcrudeapp in vm.examcrudeappList">
+                    <td>{{$index +1}}</td>
+                    <td>{{examcrudeapp.firstName}}</td>
+                     
+                      <td>{{examcrudeapp.InstType}}</td>
+                    <td>{{examcrudeapp.MinorityStatus}}</td>
+                    <td>{{examcrudeapp.AffiliationDate | date:'dd/mm/yyyy'}}</td>
+                    <td>
+                <button class="btn btn-warning" ng-click="vm.change(examcrudeapp)">Edit</button>
+                          </td>
+                    <td>
+                    <button class="btn btn-danger" ng-click="vm.delete(examcrudeapp._id)">Delete</button>
+                    </td>
+                </tr>
+        </table>
+    </div>
+    </form>
+<!-- </div> -->
